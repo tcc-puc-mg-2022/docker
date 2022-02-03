@@ -7,7 +7,8 @@ services:
       - 5672:5672
       - 15672:15672
     volumes:
-      - D:\Volumes\rabbitmq:/var/lib/rabbitmq
+      - ./rabbitmq:/var/lib/rabbitmq
+      - ./rabbitmq_config.json:/etc/rabbitmq/definitions.json
     environment:
       - RABBITMQ_ERLANG_COOKIE=secret_pass
       - RABBITMQ_DEFAULT_USER=admin
