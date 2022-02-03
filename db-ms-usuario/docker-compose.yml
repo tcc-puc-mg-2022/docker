@@ -1,0 +1,21 @@
+version: "3.8"
+
+services:
+  postgresrv:
+    image: postgres
+    environment:
+      POSTGRES_DB: "dbautenticacao"
+      POSTGRES_USER: "user_autenticacao"
+      POSTGRES_PASSWORD: "user_autenticacao"
+      PGDATA: /var/lib/postgresql/data/pgdata
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./data:/var/lib/postgresql/data
+      - ./init.sh:/docker-entrypoint-initdb.d/init.sh
+    networks:
+      - postgres-msautenticacao-network
+
+networks:
+  postgres-msautenticacao-network:
+    driver: bridge

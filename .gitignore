@@ -1,4 +1,5 @@
 .DS_Store
 
-postgres-associado/data/
+db-ms-associado/data/
+db-ms-usuario/data/
 rabbitmq/rabbitmq/
