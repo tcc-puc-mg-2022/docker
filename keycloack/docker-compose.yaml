@@ -126,3 +126,12 @@ services:
     mem_limit: 1024m
     depends_on:
       - dbassociado
+  
+  associadoconsumer:
+    container_name: associado-consumer
+    image: docker.io/library/cs-associado:1.0
+    networks:
+      - puc-net
+    ports:
+      - "8083:8083"
+    mem_limit: 1024m
