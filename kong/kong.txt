@@ -1,0 +1,66 @@
+Last login: Sat Feb  5 20:20:07 on ttys000
+╭─nelson@MacBook-Pro-de-Nelson.local ~ ‹2.7.1› 
+╰─➤  cd IdeaProjects/pucminas/tcc/project/docker  
+╭─nelson@MacBook-Pro-de-Nelson.local ~/IdeaProjects/pucminas/tcc/project/docker ‹2.7.1› ‹main› 
+╰─➤  ls   
+db-ms-associado     db-ms-usuario       docker-compose.yaml keycloack           kong                rabbitmq
+╭─nelson@MacBook-Pro-de-Nelson.local ~/IdeaProjects/pucminas/tcc/project/docker ‹2.7.1› ‹main› 
+╰─➤  git s                          
+╭─nelson@MacBook-Pro-de-Nelson.local ~/IdeaProjects/pucminas/tcc/project/docker ‹2.7.1› ‹main› 
+╰─➤  cd kong                                    
+╭─nelson@MacBook-Pro-de-Nelson.local ~/IdeaProjects/pucminas/tcc/project/docker/kong ‹2.7.1› ‹main› 
+╰─➤  ls
+docker-compose.yml kong_data
+╭─nelson@MacBook-Pro-de-Nelson.local ~/IdeaProjects/pucminas/tcc/project/docker/kong ‹2.7.1› ‹main› 
+╰─➤  deck --kong-addr http://localhost:8001 dump                       
+╭─nelson@MacBook-Pro-de-Nelson.local ~/IdeaProjects/pucminas/tcc/project/docker/kong ‹2.7.1› ‹main*› 
+╰─➤  git s
+?? kong/kong.yaml
+╭─nelson@MacBook-Pro-de-Nelson.local ~/IdeaProjects/pucminas/tcc/project/docker/kong ‹2.7.1› ‹main*› 
+╰─➤  git add .
+╭─nelson@MacBook-Pro-de-Nelson.local ~/IdeaProjects/pucminas/tcc/project/docker/kong ‹2.7.1› ‹main*› 
+╰─➤  git commit -m "chore: Add kong dump file"           
+[main 83c40e7] chore: Add kong dump file
+ 1 file changed, 48 insertions(+)
+ create mode 100644 kong/kong.yaml
+╭─nelson@MacBook-Pro-de-Nelson.local ~/IdeaProjects/pucminas/tcc/project/docker/kong ‹2.7.1› ‹main› 
+╰─➤  git push -u origin main --force          
+Enumerating objects: 6, done.
+Counting objects: 100% (6/6), done.
+Delta compression using up to 8 threads
+Compressing objects: 100% (4/4), done.
+Writing objects: 100% (4/4), 664 bytes | 664.00 KiB/s, done.
+Total 4 (delta 1), reused 0 (delta 0), pack-reused 0
+remote: Resolving deltas: 100% (1/1), completed with 1 local object.
+To https://github.com/tcc-puc-mg-2022/docker.git
+   5b0d0f0..83c40e7  main -> main
+Branch 'main' set up to track remote branch 'main' from 'origin'.
+╭─nelson@MacBook-Pro-de-Nelson.local ~/IdeaProjects/pucminas/tcc/project/docker/kong ‹2.7.1› ‹main› 
+╰─➤  vim kong.yaml 
+
+ kong.yaml                                                                                                    buffers 
+1   _format_version: "1.1"
+  1 services:
+  2 - connect_timeout: 60000
+  3   host: associadoservice
+  4   name: associado-service
+  5   path: /v1/associados
+  6   port: 8082
+  7   protocol: http
+  8   read_timeout: 60000
+  9   retries: 5
+ 10   routes:
+ 11   - https_redirect_status_code: 426
+ 12     name: associados-router
+ 13     path_handling: v1
+ 14     paths:
+ 15     - /associados
+ 16     preserve_host: false
+ 17     protocols:
+ 18     - http
+ 19     - https
+ 20     regex_priority: 0
+ 21     request_buffering: true
+ NORMAL  kong.yaml                                                      yaml  utf-8[unix]    2% ☰    1/48  :  1 
+"kong.yaml" 48L, 957B
+
