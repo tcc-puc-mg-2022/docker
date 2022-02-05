@@ -1,0 +1,48 @@
+_format_version: "1.1"
+services:
+- connect_timeout: 60000
+  host: associadoservice
+  name: associado-service
+  path: /v1/associados
+  port: 8082
+  protocol: http
+  read_timeout: 60000
+  retries: 5
+  routes:
+  - https_redirect_status_code: 426
+    name: associados-router
+    path_handling: v1
+    paths:
+    - /associados
+    preserve_host: false
+    protocols:
+    - http
+    - https
+    regex_priority: 0
+    request_buffering: true
+    response_buffering: true
+    strip_path: true
+  write_timeout: 60000
+- connect_timeout: 60000
+  host: userservice
+  name: user-service
+  path: /v1/users
+  port: 8081
+  protocol: http
+  read_timeout: 60000
+  retries: 5
+  routes:
+  - https_redirect_status_code: 426
+    name: user-router
+    path_handling: v1
+    paths:
+    - /users
+    preserve_host: false
+    protocols:
+    - http
+    - https
+    regex_priority: 0
+    request_buffering: true
+    response_buffering: true
+    strip_path: true
+  write_timeout: 60000
