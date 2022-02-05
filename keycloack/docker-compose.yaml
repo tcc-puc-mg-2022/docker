@@ -1,10 +1,10 @@
 version: "3.8"
 
 volumes:
-  postgres_data: {}
-  rabbitmq_data: {}
-  dbuser_data: {}
-  dbassociado_data: {}
+  postgres_data:
+  rabbitmq_data:
+  dbuser_data:
+  dbassociado_data:
 networks:
   puc-net:
     name: puc-net
@@ -30,7 +30,7 @@ services:
     networks:
       - puc-net
     volumes:
-      - ./config:/opt/jboss/keycloak/imports
+      - ./imports/realm-export.json:/opt/jboss/keycloak/imports/realm-export.json 
     command:
       - "-b 0.0.0.0 -Dkeycloak.import=/opt/jboss/keycloak/imports/realm-export.json"
     environment:
@@ -43,6 +43,7 @@ services:
       KEYCLOAK_USER: admin
       KEYCLOAK_PASSWORD: admin
       KEYCLOAK_HOSTNAME: srvkeycloak
+      KEYCLOAK_IMPORT: "/Users/nelson/IdeaProjects/pucminas/tcc/project/docker/keycloack/imports/realm-export.json -Dkeycloak.profile.feature.upload_scripts=enabled"
       # Uncomment the line below if you want to specify JDBC parameters. The parameter below is just an example, and it shouldn't be used in production without knowledge. It is highly recommended that you read the PostgreSQL JDBC driver documentation in order to use it.
       #JDBC_PARAMS: "ssl=true"
     ports:
