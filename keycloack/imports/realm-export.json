@@ -649,8 +649,8 @@
     {
       "id": "af6b598d-4b70-42c4-b23e-e4e1c31455e7",
       "clientId": "admin-app",
-      "rootUrl": "http://localhost:8081",
-      "adminUrl": "http://localhost:8081/*",
+      "rootUrl": "http://userservice:8081",
+      "adminUrl": "http://userservice:8081/*",
       "baseUrl": "",
       "surrogateAuthRequired": false,
       "enabled": true,
@@ -658,10 +658,10 @@
       "clientAuthenticatorType": "client-secret",
       "secret": "**********",
       "redirectUris": [
-        "http://localhost:8081/*"
+        "http://userservice:8081/*"
       ],
       "webOrigins": [
-        "http://localhost:8081/*"
+        "http://userservice:8081/*"
       ],
       "notBefore": 0,
       "bearerOnly": false,
@@ -840,18 +840,18 @@
     {
       "id": "0e7de29e-a792-4928-99dd-655dcbdf9ffe",
       "clientId": "associado-api",
-      "rootUrl": "http://localhost:8082",
-      "adminUrl": "http://localhost:8081/*",
+      "rootUrl": "http://associadoservice:8082",
+      "adminUrl": "http://associadoservice:8081/*",
       "surrogateAuthRequired": false,
       "enabled": true,
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
       "secret": "**********",
       "redirectUris": [
-        "http://localhost:8082/*"
+        "http://associadoservice:8082/*"
       ],
       "webOrigins": [
-        "http://localhost:8082/*"
+        "http://associadoservice:8082/*"
       ],
       "notBefore": 0,
       "bearerOnly": false,

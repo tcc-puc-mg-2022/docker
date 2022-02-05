@@ -5,6 +5,7 @@ volumes:
   rabbitmq_data:
   dbuser_data:
   dbassociado_data:
+  kong_data:
 networks:
   puc-net:
     name: puc-net
@@ -30,7 +31,7 @@ services:
     networks:
       - puc-net
     volumes:
-      - ./keycloack/imports/realm-export.json:/opt/jboss/keycloak/imports/realm-export.json 
+      - ./keycloack/imports:/opt/jboss/keycloak/imports
     command:
       - "-b 0.0.0.0 -Dkeycloak.import=/opt/jboss/keycloak/imports/realm-export.json"
     environment:
@@ -75,6 +76,9 @@ services:
     image: docker.io/library/ms-usuario:1.0
     networks:
       - puc-net
+    environment:
+      KCL_AUTH_URL: http://srvkeycloak:8080/auth
+      KCL_SECRET: CISOyyJta5Spqx2gB3LAzY23r3WfVuAA
     ports:
       - "8081:8081"
     mem_limit: 1024m
@@ -120,6 +124,9 @@ services:
   associadoservice:
     container_name: associado-api
     image: docker.io/library/ms-associado:1.0
+    environment:
+      KCL_AUTH_URL: http://srvkeycloak:8080/auth
+      KCL_SECRET: d8kLuTxPOco7zwYTtoUjV4EUCPCiCBeN
     networks:
       - puc-net
     ports:
@@ -136,3 +143,130 @@ services:
     ports:
       - "8083:8083"
     mem_limit: 1024m
+
+  # kong-migrations:
+  #   image: "kong:2.3.2-alpine"
+  #   command: kong migrations bootstrap
+  #   depends_on:
+  #     - kongdb
+  #   environment:
+  #     KONG_DATABASE: postgres
+  #     KONG_PG_DATABASE: kong
+  #     KONG_PG_HOST: kongdb
+  #     KONG_PG_PORT: 9432
+  #     KONG_PG_USER: kong
+  #     KONG_PG_PASSWORD: kong
+  #   networks:
+  #     - puc-net
+  #   restart: on-failure
+  #   deploy:
+  #     restart_policy:
+  #       condition: on-failure
+
+  # kong-migrations-up:
+  #   image: "kong:2.3.2-alpine"
+  #   command: kong migrations up && kong migrations finish
+  #   depends_on:
+  #     - kongdb
+  #   environment:
+  #     KONG_DATABASE: postgres
+  #     KONG_PG_DATABASE: kong
+  #     KONG_PG_HOST: kongdb
+  #     KONG_PG_PORT: 9432
+  #     KONG_PG_USER: kong
+  #     KONG_PG_PASSWORD: kong
+  #   networks:
+  #     - puc-net
+  #   restart: on-failure
+  #   deploy:
+  #     restart_policy:
+  #       condition: on-failure
+
+  # kong:
+  #   image: "kong:2.3.2-alpine"
+  #   user: "kong"
+  #   depends_on:
+  #     - kongdb
+  #   environment:
+  #     KONG_ADMIN_ACCESS_LOG: /dev/stdout
+  #     KONG_ADMIN_ERROR_LOG: /dev/stderr
+  #     KONG_ADMIN_LISTEN: "0.0.0.0:8001"
+  #     KONG_CASSANDRA_CONTACT_POINTS: kongdb
+  #     KONG_DATABASE: postgres
+  #     KONG_PG_DATABASE: kong
+  #     KONG_PG_PORT: 9432
+  #     KONG_PG_HOST: kongdb
+  #     KONG_PG_USER: kong
+  #     KONG_PROXY_ACCESS_LOG: /dev/stdout
+  #     KONG_PROXY_ERROR_LOG: /dev/stderr
+  #     KONG_PG_PASSWORD: kong
+
+  #   networks:
+  #     - puc-net
+  #   ports:
+  #     - "8000:8000/tcp"
+  #     - "8001:8001/tcp"
+  #     - "9443:8443/tcp"
+  #     - "9444:8444/tcp"
+  #   healthcheck:
+  #     test: ["CMD", "kong", "health"]
+  #     interval: 10s
+  #     timeout: 10s
+  #     retries: 10
+  #   restart: on-failure
+  #   deploy:
+  #     restart_policy:
+  #       condition: on-failure
+
+  # kongdb:
+  #   image: postgres:9.5
+  #   environment:
+  #     POSTGRES_DB: kong
+  #     POSTGRES_USER: kong
+  #     POSTGRES_PASSWORD: kong
+  #     PGPORT: 9432
+  #   healthcheck:
+  #     test: ["CMD", "pg_isready", "-U", "kong"]
+  #     interval: 30s
+  #     timeout: 30s
+  #     retries: 3
+  #   restart: on-failure
+  #   deploy:
+  #     restart_policy:
+  #       condition: on-failure
+  #   stdin_open: true
+  #   tty: true
+  #   networks:
+  #     - puc-net
+  #   volumes:
+  #     - kong_data:/var/lib/postgresql/data
+
+  # konga-prepare:
+  #   container_name: konga-prepare
+  #   image: pantsel/konga:latest
+  #   command: "-c prepare -a postgres -u postgresql://kong:kong@kongdb:9432/konga_db"
+  #   networks:
+  #     - puc-net
+  #   restart: on-failure
+  #   depends_on:
+  #     - kongdb
+
+  # konga:
+  #   container_name: konga
+  #   image: pantsel/konga:latest
+  #   restart: always
+  #   networks:
+  #     - puc-net
+  #   environment:
+  #     DB_ADAPTER: postgres
+  #     DB_HOST: kongdb
+  #     DB_USER: kong
+  #     DB_PORT: 9432
+  #     DB_PASSWORD: kong
+  #     TOKEN_SECRET: ahfdjgjgf79JKLFHJKh978953kgdfjkl
+  #     DB_DATABASE: konga_db
+  #     NODE_ENV: development
+  #   depends_on:
+  #     - kongdb
+  #   ports:
+  #     - "1337:1337"
