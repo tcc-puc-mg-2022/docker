@@ -1,0 +1,32 @@
+version: "3.8"
+
+networks:
+  puc-net:
+    external: true
+services:
+  msdb:
+    image: postgres
+    environment:
+      POSTGRES_DB: "dbautenticacao"
+      POSTGRES_USER: "user_autenticacao"
+      POSTGRES_PASSWORD: "user_autenticacao"
+      PGDATA: /var/lib/postgresql/data/pgdata
+      PGPORT: 7432
+    ports:
+      - "7432:7432"
+    volumes:
+      - ./data:/var/lib/postgresql/data
+      - ./init.sh:/docker-entrypoint-initdb.d/init.sh
+    networks:
+      - puc-net
+
+  userservice:
+    image: docker.io/library/ms-usuario:1.0
+    environment:
+      URL_DB: jdbc:postgresql://msdb:7432/dbautenticacao?currentSchema=autenticacao
+      HOST_KEYCLOACK: locahost
+      SECRET_KEYCLOACK: "eFbr2PlVXUMoAmEXJmNUo7djw4FoHvXf"
+    networks:
+      - puc-net
+    depends_on:
+      - msdb

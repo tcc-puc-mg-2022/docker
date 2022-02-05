@@ -1,0 +1,22 @@
+version: "3.8"
+
+services:
+  postgresrv:
+    image: postgres
+    environment:
+      POSTGRES_DB: "dbassociado"
+      POSTGRES_USER: "user_associado"
+      POSTGRES_PASSWORD: "user_associado"
+      PGDATA: /var/lib/postgresql/data/pgdata
+      PGPORT: 7432
+    ports:
+      - "7432:7432"
+    volumes:
+      - ./data:/var/lib/postgresql/data
+      - ./init.sh:/docker-entrypoint-initdb.d/init.sh
+    networks:
+      - postgres-msassociado-network
+
+networks:
+  postgres-msassociado-network:
+    driver: bridge

@@ -1,0 +1,61 @@
+{
+  "rabbit_version": "3.8.3",
+  "rabbitmq_version": "3.8.3",
+  "users": [
+    {
+      "name": "admin",
+      "password_hash": "PiG4K35ulNKLH2m0Mo+LyfEbK1SiJ/k2Q96leBMZ8PmNUgFv",
+      "hashing_algorithm": "rabbit_password_hashing_sha256",
+      "tags": "administrator"
+    }
+  ],
+  "vhosts": [
+    {
+      "name": "/"
+    }
+  ],
+  "permissions": [
+    {
+      "user": "admin",
+      "vhost": "/",
+      "configure": ".*",
+      "write": ".*",
+      "read": ".*"
+    }
+  ],
+  "topic_permissions": [],
+  "parameters": [],
+  "global_parameters": [
+    {
+      "name": "cluster_name",
+      "value": "rabbit@955523b4a7d0"
+    },
+    {
+      "name": "internal_cluster_id",
+      "value": "rabbitmq-cluster-id-nU1iFhbg4zruQmihY_7Ecg"
+    }
+  ],
+  "policies": [],
+  "queues": [
+    {
+      "name": "associado.cart.in",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+        "x-queue-type": "classic"
+      }
+    },
+    {
+      "name": "associado.cart.out",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+        "x-queue-type": "classic"
+      }
+    }
+  ],
+  "exchanges": [],
+  "bindings": []
+}
